@@ -134,7 +134,9 @@ class _ProductoFormViewState extends State<ProductoFormView> {
                 if (snapshot.hasError) {
                   return ErrorView(
                     message: '${snapshot.error}',
-                    onRetry: () => setState(() => _carga = _cargarProducto()),
+                    onRetry: () => setState(() {
+                      _carga = _cargarProducto();
+                    }),
                   );
                 }
                 return _buildForm();

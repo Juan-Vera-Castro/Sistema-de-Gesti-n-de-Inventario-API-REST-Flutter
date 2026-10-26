@@ -34,7 +34,9 @@ class _ProductosListViewState extends State<ProductosListView> {
   }
 
   void _reload() {
-    setState(() => _future = widget.service.listar());
+    setState(() {
+      _future = widget.service.listar();
+    });
   }
 
   Future<void> _refresh() async {

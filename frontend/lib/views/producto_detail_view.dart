@@ -33,7 +33,9 @@ class _ProductoDetailViewState extends State<ProductoDetailView> {
   }
 
   void _reload() {
-    setState(() => _future = widget.service.obtener(widget.id));
+    setState(() {
+      _future = widget.service.obtener(widget.id);
+    });
   }
 
   void _salir() {
@@ -51,7 +53,9 @@ class _ProductoDetailViewState extends State<ProductoDetailView> {
       extra: producto,
     );
     if (actualizado != null && mounted) {
-      setState(() => _future = Future.value(actualizado));
+      setState(() {
+        _future = Future.value(actualizado);
+      });
     }
   }
 

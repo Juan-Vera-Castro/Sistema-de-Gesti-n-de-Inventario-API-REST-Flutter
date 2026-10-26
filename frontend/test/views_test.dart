@@ -51,4 +51,21 @@ void main() {
     expect(find.textContaining(Formatters.moneda(45900)), findsOneWidget);
     expect(find.text('35'), findsOneWidget);
   });
+
+  testWidgets('Actualizar recarga los datos sin errores (Dashboard y listado)', (tester) async {
+    final adapter = FakeAdapter((_) => (status: 200, body: ok([productoJson(1)])));
+    final service = fakeService(adapter);
+
+    for (final view in [DashboardView(service: service), ProductosListView(service: service)]) {
+      adapter.requests.clear();
+      await tester.pumpWidget(_app(view));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byIcon(Icons.refresh));
+      await tester.pumpAndSettle();
+
+      expect(tester.takeException(), isNull);
+      expect(adapter.requests, hasLength(2));
+    }
+  });
 }

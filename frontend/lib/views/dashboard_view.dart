@@ -37,7 +37,9 @@ class _DashboardViewState extends State<DashboardView> {
   }
 
   void _reload() {
-    setState(() => _future = widget.service.obtenerResumen());
+    setState(() {
+      _future = widget.service.obtenerResumen();
+    });
   }
 
   Future<void> _refresh() async {
