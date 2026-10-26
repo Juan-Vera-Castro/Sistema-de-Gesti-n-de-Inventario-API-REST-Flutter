@@ -1,0 +1,35 @@
+# ── Secretos y variables de entorno ─────────────────────────
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# ── Node.js (backend) ───────────────────────────────────────
+node_modules/
+npm-debug.log*
+yarn-error.log*
+coverage/
+
+# ── Base de datos local (se regenera con el seeder) ─────────
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite3
+
+# ── Flutter / Dart (frontend) ───────────────────────────────
+build/
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+
+# ── IDE / SO ────────────────────────────────────────────────
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
