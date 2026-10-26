@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:inventario_app/config/formatters.dart';
 import 'package:inventario_app/views/dashboard_view.dart';
+import 'package:inventario_app/views/producto_form_view.dart';
 import 'package:inventario_app/views/productos_list_view.dart';
 
 import 'helpers/fake_api.dart';
@@ -67,5 +68,24 @@ void main() {
       expect(tester.takeException(), isNull);
       expect(adapter.requests, hasLength(2));
     }
+  });
+
+  testWidgets('Formulario rechaza precios con separador de miles y no envía la petición', (tester) async {
+    final adapter = FakeAdapter((_) => (status: 201, body: ok(productoJson(1))));
+    await tester.pumpWidget(_app(ProductoFormView(service: fakeService(adapter))));
+
+    Finder campo(String label) => find.widgetWithText(TextFormField, label);
+    await tester.enterText(campo('Nombre *'), 'Cable HDMI');
+    await tester.enterText(campo('Código *'), 'TEC-200');
+    await tester.enterText(campo('Categoría *'), 'Tecnología');
+    await tester.enterText(campo('Precio *'), '1.000');
+    await tester.enterText(campo('Cantidad *'), '5');
+
+    await tester.ensureVisible(find.widgetWithText(FilledButton, 'Registrar producto'));
+    await tester.tap(find.widgetWithText(FilledButton, 'Registrar producto'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Sin puntos de miles; máx. 2 decimales'), findsOneWidget);
+    expect(adapter.requests, isEmpty);
   });
 }

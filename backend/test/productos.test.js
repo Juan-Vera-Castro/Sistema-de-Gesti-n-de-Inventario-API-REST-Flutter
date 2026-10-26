@@ -110,6 +110,13 @@ describe('POST /api/productos', () => {
     assert.ok(res.body.errors.cantidad);
   });
 
+  it('rechaza con 422 (no 500) precios que se redondean a 0 y cantidades fuera de rango', async () => {
+    const { status, body } = await request('POST', '/productos', { ...nuevoProducto, precio: 0.001, cantidad: 1e20 });
+    assert.equal(status, 422);
+    assert.ok(body.errors.precio);
+    assert.ok(body.errors.cantidad);
+  });
+
   it('rechaza código duplicado sin distinguir mayúsculas', async () => {
     const { status, body } = await request('POST', '/productos', {
       ...nuevoProducto, codigo: productosSeed[0].codigo.toLowerCase(),

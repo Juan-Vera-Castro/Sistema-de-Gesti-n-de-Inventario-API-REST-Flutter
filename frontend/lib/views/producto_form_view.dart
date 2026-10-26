@@ -66,12 +66,20 @@ class _ProductoFormViewState extends State<ProductoFormView> {
     _nombre.text = p.nombre;
     _codigo.text = p.codigo;
     _descripcion.text = p.descripcion ?? '';
-    _precio.text = p.precio == p.precio.roundToDouble() ? p.precio.toStringAsFixed(0) : '${p.precio}';
+    _precio.text = p.precio == p.precio.roundToDouble() ? p.precio.toStringAsFixed(0) : p.precio.toStringAsFixed(2);
     _cantidad.text = '${p.cantidad}';
     _categoria.text = p.categoria;
   }
 
-  static double? _parsePrecio(String text) => double.tryParse(text.trim().replaceAll(',', '.'));
+  /// Entero con hasta 2 decimales (`45900`, `15000,5`, `9.99`). Se rechazan
+  /// separadores de miles: `1.000` sería ambiguo (¿mil o uno?).
+  static final _formatoPrecio = RegExp(r'^\d+([.,]\d{1,2})?$');
+
+  static double? _parsePrecio(String text) {
+    final limpio = text.trim();
+    if (!_formatoPrecio.hasMatch(limpio)) return null;
+    return double.tryParse(limpio.replaceAll(',', '.'));
+  }
 
   Future<void> _guardar() async {
     FocusScope.of(context).unfocus();
@@ -187,13 +195,14 @@ class _ProductoFormViewState extends State<ProductoFormView> {
                   campo: 'precio',
                   controller: _precio,
                   label: 'Precio *',
+                  hint: 'Ej. 45900',
                   icon: Icons.attach_money_rounded,
                   keyboardType: const TextInputType.numberWithOptions(decimal: true),
                   inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]'))],
                   validator: (v) {
                     if (v == null || v.trim().isEmpty) return 'Ingresa el precio';
                     final precio = _parsePrecio(v);
-                    if (precio == null) return 'Número no válido';
+                    if (precio == null) return 'Sin puntos de miles; máx. 2 decimales';
                     if (precio <= 0) return 'Debe ser mayor que 0';
                     return null;
                   },

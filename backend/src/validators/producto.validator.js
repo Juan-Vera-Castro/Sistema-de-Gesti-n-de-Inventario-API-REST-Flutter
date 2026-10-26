@@ -45,9 +45,13 @@ export function validateProducto(body) {
     errors.precio = 'El campo precio es obligatorio';
   } else {
     precio = toNumber(body.precio);
-    if (!Number.isFinite(precio)) errors.precio = 'El precio debe ser un número válido';
-    else if (precio <= 0) errors.precio = 'El precio debe ser mayor que 0';
-    else precio = Math.round(precio * 100) / 100;
+    if (!Number.isFinite(precio)) {
+      errors.precio = 'El precio debe ser un número válido';
+    } else {
+      // Se valida después de redondear: 0.001 > 0 pero se guardaría como 0.
+      precio = Math.round(precio * 100) / 100;
+      if (precio <= 0) errors.precio = 'El precio debe ser mayor que 0 (mínimo 0.01)';
+    }
   }
 
   let cantidad = null;
@@ -55,7 +59,7 @@ export function validateProducto(body) {
     errors.cantidad = 'El campo cantidad es obligatorio';
   } else {
     cantidad = toNumber(body.cantidad);
-    if (!Number.isInteger(cantidad)) errors.cantidad = 'La cantidad debe ser un número entero';
+    if (!Number.isSafeInteger(cantidad)) errors.cantidad = 'La cantidad debe ser un número entero válido';
     else if (cantidad < 0) errors.cantidad = 'La cantidad no puede ser negativa';
   }
 
