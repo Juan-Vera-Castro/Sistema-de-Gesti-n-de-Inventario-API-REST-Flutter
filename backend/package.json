@@ -1,0 +1,22 @@
+{
+  "name": "inventario-api",
+  "version": "1.0.0",
+  "description": "API REST para el Sistema de Gestión de Inventario (Express + SQLite)",
+  "type": "module",
+  "main": "src/server.js",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "seed": "node src/db/seed.js",
+    "test": "node --test test/"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.9",
+    "express": "^5.3.0"
+  }
+}
