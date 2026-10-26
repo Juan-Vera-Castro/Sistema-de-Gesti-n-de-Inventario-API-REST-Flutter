@@ -44,11 +44,11 @@ class Producto {
 
   /// Cuerpo para POST/PUT: solo los campos editables.
   Map<String, dynamic> toJson() => {
-        'nombre': nombre,
-        'codigo': codigo,
-        'descripcion': descripcion,
-        'precio': precio,
-        'cantidad': cantidad,
-        'categoria': categoria,
-      };
+    'nombre': nombre,
+    'codigo': codigo,
+    'descripcion': descripcion,
+    'precio': precio,
+    'cantidad': cantidad,
+    'categoria': categoria,
+  };
 }

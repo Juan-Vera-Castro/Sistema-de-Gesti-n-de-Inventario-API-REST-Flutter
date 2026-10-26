@@ -18,9 +18,7 @@ Dio createApiClient() {
   );
 
   if (kDebugMode) {
-    dio.interceptors.add(
-      LogInterceptor(requestBody: true, responseBody: false, logPrint: (o) => debugPrint('$o')),
-    );
+    dio.interceptors.add(LogInterceptor(requestBody: true, responseBody: false, logPrint: (o) => debugPrint('$o')));
   }
   return dio;
 }

@@ -18,6 +18,7 @@ class ApiException implements Exception {
       case DioExceptionType.connectionTimeout:
       case DioExceptionType.sendTimeout:
       case DioExceptionType.receiveTimeout:
+      case DioExceptionType.transformTimeout:
         return const ApiException('El servidor tardó demasiado en responder. Intenta de nuevo.');
       case DioExceptionType.connectionError:
         return const ApiException(

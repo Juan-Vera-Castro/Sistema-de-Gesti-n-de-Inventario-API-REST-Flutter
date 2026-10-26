@@ -21,9 +21,7 @@ class ProductoService {
   Future<List<Producto>> listar() {
     return _send(
       () => _dio.get(_path),
-      (data) => (data as List<dynamic>)
-          .map((item) => Producto.fromJson(item as Map<String, dynamic>))
-          .toList(),
+      (data) => (data as List<dynamic>).map((item) => Producto.fromJson(item as Map<String, dynamic>)).toList(),
     );
   }
 
@@ -38,8 +36,7 @@ class ProductoService {
   }
 
   Future<Producto> actualizar(int id, Producto producto) async {
-    final actualizado =
-        await _send(() => _dio.put('$_path/$id', data: producto.toJson()), _parseProducto);
+    final actualizado = await _send(() => _dio.put('$_path/$id', data: producto.toJson()), _parseProducto);
     _notificarCambio();
     return actualizado;
   }
@@ -59,10 +56,7 @@ class ProductoService {
 
   /// Ejecuta la petición, desempaqueta `data` del formato estándar de la API,
   /// la convierte con [parse] y traduce cualquier fallo a [ApiException].
-  Future<T> _send<T>(
-    Future<Response<dynamic>> Function() request,
-    T Function(dynamic data) parse,
-  ) async {
+  Future<T> _send<T>(Future<Response<dynamic>> Function() request, T Function(dynamic data) parse) async {
     try {
       final response = await request();
       final body = response.data;
